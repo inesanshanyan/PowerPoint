@@ -1,15 +1,15 @@
 #include "../include/CommandParser.hpp"
 
-CommandParser::CommandParser() { }
+cli::CommandParser::CommandParser() { }
 
-std::string CommandParser::deleteSpaces(const std::string &str) {
+std::string cli::CommandParser::deleteSpaces(const std::string &str) {
     size_t first = str.find_first_not_of(' ');
     size_t last = str.find_last_not_of(' ');
 
     return str.substr(first, (last - first + 1));
 }
 
-std::vector<std::string> CommandParser::splitIntoTokens(const std::string &str) {
+std::vector<std::string> cli::CommandParser::splitIntoTokens(const std::string &str) {
     std::vector<std::string> tokens;
     std::stringstream ss(str);
     std::string word;
@@ -21,15 +21,15 @@ std::vector<std::string> CommandParser::splitIntoTokens(const std::string &str) 
     return tokens;
 }
 
-void CommandParser::handleAddSlide() {
+void cli::CommandParser::handleAddSlide() {
     std::cout << "A slide has been added" << std::endl;
 }
 
-void CommandParser::handleRemoveSlide() {
+void cli::CommandParser::handleRemoveSlide() {
     std::cout << "A slide has been removed" << std::endl;
 }
 
-void CommandParser::handleAddShape(const std::vector<std::string> &tokens) {
+void cli::CommandParser::handleAddShape(const std::vector<std::string> &tokens) {
     std::string shapeType = tokens[1];
 
     int x = std::stoi(tokens[2]);
@@ -53,7 +53,7 @@ void CommandParser::handleAddShape(const std::vector<std::string> &tokens) {
     }
 }
 
-void CommandParser::handleRemoveShape(const std::vector<std::string> &tokens) {
+void cli::CommandParser::handleRemoveShape(const std::vector<std::string> &tokens) {
     std::string shapeType = tokens[1];
     if(shapeType == "rectangle" || shapeType == "square" || shapeType == "circle") {
         std::cout << "Unknown shape. Shape options: rectangle, square, circle\n";
@@ -63,7 +63,7 @@ void CommandParser::handleRemoveShape(const std::vector<std::string> &tokens) {
     }
 }
 
-void CommandParser::handleGoToSlide(const std::vector<std::string> &tokens) {
+void cli::CommandParser::handleGoToSlide(const std::vector<std::string> &tokens) {
     if (tokens.size() < 2) {
         std::cout << "Invalid 'go to slide' command" << std::endl;
         return;
@@ -72,31 +72,31 @@ void CommandParser::handleGoToSlide(const std::vector<std::string> &tokens) {
     std::cout << "Switched to slide " << slideNumber << std::endl;
 }
 
-void CommandParser::handleNext() {
+void cli::CommandParser::handleNext() {
     std::cout << "Switched to the next slide" << std::endl;
 }
 
 
-void CommandParser::handlePrev() {
+void cli::CommandParser::handlePrev() {
     std::cout << "Switched to the previous slide" << std::endl;
 }
 
 
-void CommandParser::handlePlay() {
+void cli::CommandParser::handlePlay() {
     std::cout << "Presentation is now playing" << std::endl;
 }
 
-void CommandParser::handlePause() {
+void cli::CommandParser::handlePause() {
     std::cout << "Presentation is now paused" << std::endl;
 }
 
 
-void CommandParser::handleStop() {
+void cli::CommandParser::handleStop() {
     std::cout << "Presentation has been stopped" << std::endl;
 }
 
 
-void CommandParser::handleHelp(){
+void cli::CommandParser::handleHelp(){
     std::cout << "Commands to enter: " << std::endl;
     std::cout << "add slide" << std::endl;
     std::cout << "remove slide" << std::endl;
@@ -115,7 +115,7 @@ void CommandParser::handleHelp(){
     std::cout << "exit" << std::endl;
 }
 
-void CommandParser::parseCommand(const std::string &input) {
+void cli::CommandParser::parseCommand(const std::string &input) {
     std::string trimmed_input = deleteSpaces(input);
     std::vector<std::string> tokens = splitIntoTokens(trimmed_input);
     
