@@ -1,4 +1,4 @@
-#include "include/CommandParser.hpp"
+#include "include/commandParser.hpp"
 
 int main() {
     CommandParser parser;
