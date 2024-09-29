@@ -1,15 +1,15 @@
-#include "../include/commandParser.hpp"
+#include "commandParser.hpp"
 
-cli::CommandParser::CommandParser() { }
+/*CommandParser::CommandParser() { }
 
-std::string cli::CommandParser::deleteSpaces(const std::string &str) {
+std::string CommandParser::deleteSpaces(const std::string &str) {
     size_t first = str.find_first_not_of(' ');
     size_t last = str.find_last_not_of(' ');
 
     return str.substr(first, (last - first + 1));
 }
 
-std::vector<std::string> cli::CommandParser::splitIntoTokens(const std::string &str) {
+std::vector<std::string> CommandParser::splitIntoTokens(const std::string &str) {
     std::vector<std::string> tokens;
     std::stringstream ss(str);
     std::string word;
@@ -19,7 +19,7 @@ std::vector<std::string> cli::CommandParser::splitIntoTokens(const std::string &
     return tokens;
 }
 
-cli::Command* cli::CommandParser::parseCommand(const std::string &input) { 
+cli::Command* CommandParser::parseCommand(const std::string &input) { 
     std::string trimmed_input = deleteSpaces(input);  
     std::vector<std::string> tokens = splitIntoTokens(trimmed_input); 
     
@@ -121,7 +121,7 @@ cli::Command* cli::CommandParser::parseCommand(const std::string &input) {
     }
 
     return nullptr;
-}
+}*/
 
 
 
