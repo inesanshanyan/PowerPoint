@@ -1,8 +1,7 @@
 #include "tokenizer.hpp"
 
 std::vector<TokenType> Tokenizer::tokenizer(std::string command_stream) {
-    //clear();
-    std::vector<TokenType> token_types;
+    clearVectors();
     std::string token;
     std::istringstream stream(command_stream);
     while (stream >> token) {
@@ -22,4 +21,9 @@ std::vector<TokenType> Tokenizer::tokenizer(std::string command_stream) {
 
 std::vector<std::string> Tokenizer::get_tokens() const{
     return tokens;
+}
+
+void Tokenizer::clearVectors(){
+    tokens.clear();
+    token_types.clear();
 }

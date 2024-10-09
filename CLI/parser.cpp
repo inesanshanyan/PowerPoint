@@ -1,7 +1,12 @@
 #include "parser.hpp"
 
+
+Parser& Parser::getInstance() {
+    static Parser instance; 
+    return instance;       
+}
+
 void Parser::parser(std::string command_stream) {
-    Tokenizer tokenizer;
     command_name.clear(); 
     options_map.clear();
 
@@ -52,7 +57,7 @@ void Parser::parser(std::string command_stream) {
     } catch (...) {
         std::cerr << "unknown error" << std::endl;
     }
-
+    
     print();
 }
 
