@@ -12,6 +12,14 @@ void Parser::parser(std::string command_stream) {
 
     std::vector<TokenType> token_types = tokenizer.tokenizer(command_stream);
     std::vector<std::string> tokens = tokenizer.get_tokens();
+    //tokenizer.print();
+    if(!syntax_analyzer.syntax_analyzer(token_types)){
+        return;
+    }
+
+    /*if(!semantic_analyzer.semantic_analyzer(token_types, tokens)){
+        return;
+    }*/
 
     auto token = tokens.begin();
     auto type = token_types.begin();

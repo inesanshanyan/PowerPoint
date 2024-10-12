@@ -1,6 +1,8 @@
 #pragma once 
 
 #include "tokenizer.hpp"
+#include "syntax_analyzer.hpp"
+#include "semantic_analyzer.hpp"
 
 #include <string>
 
@@ -20,6 +22,6 @@ private:
     std::unordered_map<std::string, std::vector<double>> options_map; 
 
     Tokenizer tokenizer;
-    //SyntaxAnalyzer syntax_analyzer;
+    SyntaxAnalyzer syntax_analyzer;
     //SemanticAnalyzer semantic_analyzer;
 };
