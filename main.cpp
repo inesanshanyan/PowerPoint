@@ -1,14 +1,8 @@
-#include "CLI/parser.hpp"
+#include "CLI/cli_controller.hpp"
 
 int main() {
-    std::string command;
-    Parser& parser = Parser::getInstance();
-    while (std::getline(std::cin, command)) {
-        if (command == "exit") {
-            break;
-        }
-        parser.parser(command);
-    }
+    Controller c;
+    c.cli_controller();
     
     return 0;
 }

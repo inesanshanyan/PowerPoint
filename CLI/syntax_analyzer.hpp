@@ -14,8 +14,14 @@ enum class States{
 class SyntaxAnalyzer{
 public:
     SyntaxAnalyzer() = default;
-    bool syntax_analyzer(std::vector<TokenType>);
-
+    bool analyzer(const std::vector<Token>&
+    
+);
+    //static States current_state;
+    
+private:
+    static States current_state;
+    static bool is_single_word;
 };
 
 class SyntaxErrorException : public std::exception {

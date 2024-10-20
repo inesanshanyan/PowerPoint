@@ -1,56 +1,58 @@
 #include "syntax_analyzer.hpp"
 
-bool SyntaxAnalyzer::syntax_analyzer(std::vector<TokenType> token_types){
+bool SyntaxAnalyzer::analyzer(const std::vector<Token>& token_vec){
     States current_state = States::START_STATE;
+    bool continue_execution = false;
     try{
-        for (const auto& type : token_types){
+        for (const auto& token : token_vec){
             switch(current_state) {
                 case States::START_STATE : 
-                    if(type == TokenType::WORD) {
+                    if(token.type == Token::TokenType::WORD) {
                         current_state = States::WORD_STATE;
-                    } else throw SyntaxErrorException();
+                    } 
+                    else throw SyntaxErrorException();
                     break;
 
                 case States::WORD_STATE :
-                    if(type == TokenType::OPTION) {
+                    if(token.type == Token::TokenType::OPTION) {
                         current_state = States::OPTION_STATE;
                     } 
-                    else if (type == TokenType::SHAPE_OPTION) {
+                    else if (token.type == Token::TokenType::SHAPE_OPTION) {
                         current_state = States::SHAPE_OPTION_STATE;
-                    } else throw SyntaxErrorException();
+                    } 
+                    else throw SyntaxErrorException();
                     break;
 
                 case States::OPTION_STATE:
-                    if(type == TokenType::VALUE) {
+                    if(token.type == Token::TokenType::VALUE) {
                         current_state = States::VALUE_STATE;
-                    } else {
+                    } 
+                    else {
                         throw SyntaxErrorException();
                     }                
                     break;
 
                 case States::SHAPE_OPTION_STATE:
-                    if(type == TokenType::OPTION) {
+                    if(token.type == Token::TokenType::OPTION) {
                         current_state = States::OPTION_STATE;
-                    } else {
+                    }
+                    else {
                         throw SyntaxErrorException();
                     }                
                     break;
 
                 case States::VALUE_STATE : 
-                    if (type == TokenType::VALUE) {
+                    if (token.type == Token::TokenType::VALUE) {
                         current_state = States::VALUE_STATE;
                     }
-                    else if (type == TokenType::OPTION) {
+                    else if (token.type == Token::TokenType::OPTION) {
                         current_state = States::OPTION_STATE;
                     }
-                    else if (type == TokenType::END) {
-                        current_state = States::END_STATE;
+                    else if (token.type == Token::TokenType::END) {
+                        return true;
                     }
                     else throw SyntaxErrorException();
                     break;
-    
-                case States::END_STATE :
-                    return true;
 
                 default :
                     throw UnknownException();

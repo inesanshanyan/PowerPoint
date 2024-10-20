@@ -5,23 +5,29 @@
 #include "semantic_analyzer.hpp"
 
 #include <string>
+#include <variant>
 
 class Parser{ 
 public:
     static Parser& getInstance();
-    void parser(std::string command);
+    void parser(std::string& command);
     void print();
 
     Parser(const Parser&) = delete;
     void operator=(const Parser&) = delete;
 
 private:
-    Parser() = default;
+    Parser();
+    static Parser* instance;
 
     std::string command_name;
-    std::unordered_map<std::string, std::vector<double>> options_map; 
+    std::map<std::string, std::vector<std::variant<int, double, std::string>>> options_map;
+    std::vector<Token> token_vec;
+    void print_vec();
 
     Tokenizer tokenizer;
-    SyntaxAnalyzer syntax_analyzer;
-    //SemanticAnalyzer semantic_analyzer;
+    SyntaxAnalyzer syntax;
+    SemanticAnalyzer semantic;
+
+    Token* token;
 };
