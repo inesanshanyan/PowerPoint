@@ -2,15 +2,12 @@
 
 
 void Controller::cli_controller(){
-    /*if(!token_vec.empty()){
-        token_vec.clear();
-    }*/
     while(true){
         std::string command;
-
         while(true){
             getline(std::cin, command);
             Parser::getInstance().parser(command);
+            std::shared_ptr<Command> cmd = CommandFactory::get_instance().create_command();            
         }
         
     }

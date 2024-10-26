@@ -1,14 +1,15 @@
 #pragma once
 
-//#include "parser.hpp"
-#include "tokenizer.hpp"
-#include "syntax_analyzer.hpp"
-#include "parser.hpp"
+#include "./Parser/tokenizer.hpp"
+#include "./Parser/parser.hpp"
+#include "./Command_creator/command_factory.hpp"
 
 #include <iostream>
 
 class Controller{
 public:
-    Controller() {};
+    Controller() { };
     void cli_controller();
+
+private:
 };

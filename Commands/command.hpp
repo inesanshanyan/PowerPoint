@@ -3,11 +3,14 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include <variant>
+#include <iostream>
 
 class Command {
 public:
-    //virtual bool validate(const std::unordered_map<std::string, std::vector<std::string>>& options) = 0;
     virtual void execute() = 0;
     virtual ~Command() = default;
 };
+
+
 

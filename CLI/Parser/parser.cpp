@@ -75,12 +75,13 @@ void Parser::parser(std::string& command) {
     }
     
     if (!semantic.analyze(command_name, options_map)) {
-        std::cout << "false\n";
-    } else {
-        std::cout << "true\n";
-    }
+        std::cout << "semantic failed\n";
+        return;
+    } 
 
     print();
+    CommandFactory::get_instance().set_data(command_name, options_map);
+    //std::shared_ptr<Command> cmd = factory.create_command(); // this will go to cli_controller 
 }
 
 void Parser::print() {

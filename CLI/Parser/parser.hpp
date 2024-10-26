@@ -30,8 +30,5 @@ private:
     SyntaxAnalyzer syntax;
     SemanticAnalyzer semantic;
 
-    CommandFactory factory;
-
-
     Token* token;
 };

@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "tokenizer.hpp"
-#include "command_list.hpp"
+#include "../Command_Creator/command_list.hpp"
 
 enum class States{
     START_STATE, END_STATE,
@@ -14,9 +14,7 @@ enum class States{
 class SyntaxAnalyzer{
 public:
     SyntaxAnalyzer() = default;
-    bool analyzer(const std::vector<Token>&
-    
-);
+    bool analyzer(const std::vector<Token>&);
     //static States current_state;
     
 private:

@@ -1,4 +1,4 @@
-#include "syntax_analyzer.hpp"
+#include "./syntax_analyzer.hpp"
 
 bool SyntaxAnalyzer::analyzer(const std::vector<Token>& token_vec){
     States current_state = States::START_STATE;
@@ -20,7 +20,12 @@ bool SyntaxAnalyzer::analyzer(const std::vector<Token>& token_vec){
                     else if (token.type == Token::TokenType::SHAPE_OPTION) {
                         current_state = States::SHAPE_OPTION_STATE;
                     } 
-                    else throw SyntaxErrorException();
+                    else if (token.type == Token::TokenType::END) {
+                        return true;
+                    }
+                    else {
+                        throw SyntaxErrorException();
+                    }
                     break;
 
                 case States::OPTION_STATE:

@@ -44,8 +44,3 @@ void Tokenizer::print(const Token& token){
     }
 }
 
-/*void Tokenizer::set_END(Token& end) const {
-    Token end;
-    end.type = Token::TokenType::WORD;
-    end.data_type = Token::DataType::STRING;
-}*/
