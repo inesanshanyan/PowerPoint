@@ -2,7 +2,7 @@
 
 Parser* Parser::instance = nullptr;
 
-Parser::Parser()  { }
+Parser::Parser() = default;
 
 Parser& Parser::getInstance() {
     if(instance == nullptr){
