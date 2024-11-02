@@ -11,7 +11,7 @@ public:
 
     void execute() override {
         std::cout << "Executing RemoveShape command." << std::endl;
-        std::cout << "Index: " << index << std::endl;
+        std::cout << "index: " << index << std::endl;
     }
 
 private:

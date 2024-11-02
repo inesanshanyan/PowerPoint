@@ -10,6 +10,17 @@ void ItemCollection::remove_item(std::size_t index) {
     }
 }
 
+void ItemCollection::show(){
+    for(const auto it : items) {
+        std::cout << "item " << it->get_name() << ": " 
+        //<< "size : " << it->get_size();
+        << " color : " << it->get_color()
+        << " index : " << it->get_index();
+        //pos
+        //complete
+    }
+}
+
 std::shared_ptr<Item> ItemCollection::get_item(std::size_t index) const {
     if (index < items.size()) {
         return items[index];

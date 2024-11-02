@@ -6,8 +6,9 @@ void Controller::cli_controller(){
         std::string command;
         while(true){
             getline(std::cin, command);
-            Parser::getInstance().parser(command);
-            std::shared_ptr<Command> cmd = CommandFactory::get_instance().create_command();            
+            Parser::getInstance(CommandFactory::get_instance()).parser(command);
+            std::shared_ptr<Command> cmd = CommandFactory::get_instance().create_command();  
+            cmd->execute();          
         }
         
     }

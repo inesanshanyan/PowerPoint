@@ -15,7 +15,7 @@ public:
 
     void execute() override {
         std::cout << "Executing EditSlide command." << std::endl;
-        std::cout << "Index: " << index << ", Color: " << color << std::endl;
+        std::cout << "index: " << index << ", color: " << color << std::endl;
     }
 
 private:

@@ -7,10 +7,12 @@
 
 #include <string>
 #include <variant>
+#include <unordered_map>
+#include <vector>
 
-class Parser{ 
+class Parser { 
 public:
-    static Parser& getInstance();
+    static Parser& getInstance(CommandFactory& factory);
     void parser(std::string& command);
     void print();
 
@@ -18,7 +20,7 @@ public:
     void operator=(const Parser&) = delete;
 
 private:
-    Parser();
+    explicit Parser(CommandFactory& factory); 
     static Parser* instance;
 
     std::string command_name;
@@ -30,8 +32,7 @@ private:
     SyntaxAnalyzer syntax;
     SemanticAnalyzer semantic;
 
-    CommandFactory factory;
-
+    CommandFactory& factory;  
 
     Token* token;
 };

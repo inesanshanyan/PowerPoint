@@ -13,8 +13,8 @@ void CommandFactory::set_data(const std::string& command_name, const std::unorde
 
 
 std::shared_ptr<Command> CommandFactory::create_command() {
-    std::cout << "looking for command: " << command;
-    print_command_map();
+    //std::cout << "looking for command: " << command;
+    //print_command_map();
     auto it = command_map.find(command);
     if (it != command_map.end()) {
         return it->second(options); 

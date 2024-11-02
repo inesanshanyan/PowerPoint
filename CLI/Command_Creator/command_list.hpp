@@ -23,7 +23,8 @@ struct CommandList {
             {
                 {"-size", {{Token::DataType::INT, Token::DataType::INT}, 2}},
                 {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-color", {{Token::DataType::STRING}, 1}}
+                {"-color", {{Token::DataType::STRING}, 1}},
+                {"-slideindex", {{Token::DataType::INT}, 1}}
             }
         };
         CommandFactory::get_instance().add_command<AddShapeRectangle>("addshape-rectangle");
@@ -32,7 +33,8 @@ struct CommandList {
             {
                 {"-size", {{Token::DataType::INT}, 1}},
                 {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-color", {{Token::DataType::STRING}, 1}}
+                {"-color", {{Token::DataType::STRING}, 1}},
+                {"-slideindex", {{Token::DataType::INT}, 1}}
             }
         };
         CommandFactory::get_instance().add_command<AddShapeCircle>("addshape-circle");
@@ -41,7 +43,8 @@ struct CommandList {
             {
                 {"-size", {{Token::DataType::INT}, 1}},
                 {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-color", {{Token::DataType::STRING}, 1}}
+                {"-color", {{Token::DataType::STRING}, 1}},
+                {"-slideindex", {{Token::DataType::INT}, 1}}
             }
         };
         CommandFactory::get_instance().add_command<AddShapeSquare>("addshape-square");
@@ -51,14 +54,16 @@ struct CommandList {
             {
                 {"-text", {{Token::DataType::STRING}, 1}},
                 {"-size", {{Token::DataType::INT}, 1}},
-                {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}}
+                {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
+                {"-slideindex", {{Token::DataType::INT}, 1}}
             }
         };
         CommandFactory::get_instance().add_command<AddText>("add-text");
 
         commands["addslide"] = {
             {
-                {"-index", {{Token::DataType::INT}, 1}}
+                {"-index", {{Token::DataType::INT}, 1}},
+                {"-color", {{Token::DataType::STRING}, 1}}
             }
         };
         CommandFactory::get_instance().add_command<AddSlide>("addslide");

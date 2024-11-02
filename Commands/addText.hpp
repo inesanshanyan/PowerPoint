@@ -18,8 +18,8 @@ public:
 
     void execute() override {
         std::cout << "Executing AddShapeText command." << std::endl;
-        std::cout << "Text: " << text << ", Font Size: " << fontSize 
-                  << ", Position: (" << x << ", " << y << ")" << std::endl;
+        std::cout << "text: " << text << ", font size: " << fontSize 
+                  << ", position: (" << x << ", " << y << ")" << std::endl;
     }
 
 private:

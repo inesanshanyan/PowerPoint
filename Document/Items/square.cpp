@@ -8,7 +8,7 @@ void Square::set_pos(const Position& pos) {
     position = pos;
 }
 
-void Square::set_color(const Color& c) {
+void Square::set_color(const std::string& c) {
     color = c;
 }
 
@@ -20,11 +20,15 @@ void Square::set_size(const Size& s) {
     size = s;
 }
 
+void Square::set_name(const std::string& n) {
+    name = n;
+}
+
 Position Square::get_pos() const {
     return position;
 }
 
-Color Square::get_color() const {
+std::string Square::get_color() const {
     return color;
 }
 
@@ -35,3 +39,8 @@ std::size_t Square::get_index() const {
 Size Square::get_size() const {
     return size;
 }
+
+std::string Square::get_name() const {
+    return name;
+}
+

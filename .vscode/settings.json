@@ -56,6 +56,8 @@
         "condition_variable": "cpp",
         "ratio": "cpp",
         "semaphore": "cpp",
-        "stop_token": "cpp"
+        "stop_token": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp"
     }
 }

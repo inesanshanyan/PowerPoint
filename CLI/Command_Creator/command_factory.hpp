@@ -19,7 +19,7 @@ public:
 
     template<typename CommandType>
     void add_command(const std::string& command_name) {
-        std::cout << "Added command: " << command_name << std::endl;
+        //std::cout << "Added command: " << command_name << std::endl;
         command_map[command_name] = [](const std::unordered_map<std::string, std::vector<std::variant<int, double, std::string>>>& options) {
             return std::make_shared<CommandType>(options);
         };

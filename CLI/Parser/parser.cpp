@@ -1,15 +1,17 @@
 #include "parser.hpp"
 
+#include "parser.hpp"
+
 Parser* Parser::instance = nullptr;
 
-Parser::Parser() = default;
-
-Parser& Parser::getInstance() {
-    if(instance == nullptr){
-        instance = new Parser();
+Parser& Parser::getInstance(CommandFactory& factory) {
+    if (!instance) {
+        instance = new Parser(factory);
     }
-    return *instance;  
+    return *instance;
 }
+
+Parser::Parser(CommandFactory& factory) : factory(factory) { }
 
 void Parser::parser(std::string& command) {
     command_name.clear(); 
@@ -28,7 +30,7 @@ void Parser::parser(std::string& command) {
     end_token.set_END();
     token_vec.push_back(end_token);
 
-    print_vec();
+    //print_vec();
     if (!syntax.analyzer(token_vec)) {
         return; 
     }
@@ -79,7 +81,7 @@ void Parser::parser(std::string& command) {
         return;
     } 
 
-    print();
+    //print();
     CommandFactory::get_instance().set_data(command_name, options_map);
     //std::shared_ptr<Command> cmd = factory.create_command(); // this will go to cli_controller 
 }
