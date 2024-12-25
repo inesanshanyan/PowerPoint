@@ -1,38 +1,34 @@
-#pragma once 
+#pragma once
 
 #include "tokenizer.hpp"
 #include "syntax_analyzer.hpp"
 #include "semantic_analyzer.hpp"
 #include "../Command_Creator/command_factory.hpp"
+#include "command_struct.hpp"
 
 #include <string>
 #include <variant>
 #include <unordered_map>
 #include <vector>
+#include <memory>
 
-class Parser { 
+class Parser {
 public:
-    static Parser& getInstance(CommandFactory& factory);
-    void parser(std::string& command);
+    Parser(); 
+    std::shared_ptr<ICommand> parse(std::string& command);
     void print();
 
-    Parser(const Parser&) = delete;
-    void operator=(const Parser&) = delete;
 
 private:
-    explicit Parser(CommandFactory& factory); 
-    static Parser* instance;
-
-    std::string command_name;
-    std::unordered_map<std::string, std::vector<std::variant<int, double, std::string>>> options_map;
+    CommandStruct command_struct;
     std::vector<Token> token_vec;
     void print_vec();
 
-    Tokenizer tokenizer;
-    SyntaxAnalyzer syntax;
-    SemanticAnalyzer semantic;
+    std::unique_ptr<Tokenizer> tokenizer;
+    std::unique_ptr<SyntaxAnalyzer> syntax;
+    std::unique_ptr<SemanticAnalyzer> semantic;
 
-    CommandFactory& factory;  
+    CommandFactory& factory = CommandFactory::get_instance();
 
     Token* token;
 };

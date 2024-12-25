@@ -3,18 +3,18 @@
 #include <variant>
 #include <vector>
 #include <string>
-#include <iostream>
 #include <unordered_map>
+#include <exception>
 
-#include "tokenizer.hpp" 
+#include "tokenizer.hpp"
 #include "../Command_Creator/command_list.hpp"
+#include "command_struct.hpp"
+
 
 class SemanticAnalyzer {
 public:
     SemanticAnalyzer();
-    
-    bool analyze(const std::string& command_name, 
-                 const std::unordered_map<std::string, std::vector<std::variant<int, double, std::string>>>& options);
+    bool analyze(const CommandStruct& command_struct);
 
 private:
     CommandList command_list;
@@ -26,10 +26,11 @@ private:
     std::string data_type_to_string(Token::DataType type);
 };
 
-
 class SemanticErrorException : public std::exception {
 public:
-    virtual const char* what() const noexcept override {
-        return "Semantic Error";
-    }
+    explicit SemanticErrorException(const std::string& message);
+    virtual const char* what() const noexcept override;
+
+private:
+    std::string error;
 };

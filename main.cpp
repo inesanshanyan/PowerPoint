@@ -1,8 +1,8 @@
-#include "CLI/cli_controller.hpp"
+#include "./Application/application.hpp"
 
 int main() {
-    Controller c;
-    c.cli_controller();
-    
+    Application app;
+    app.run();
+
     return 0;
 }

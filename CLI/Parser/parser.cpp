@@ -1,121 +1,73 @@
 #include "parser.hpp"
+#include <iostream>
 
-#include "parser.hpp"
 
-Parser* Parser::instance = nullptr;
+Parser::Parser() 
+    : tokenizer(std::make_unique<Tokenizer>()),
+      syntax(std::make_unique<SyntaxAnalyzer>()),
+      semantic(std::make_unique<SemanticAnalyzer>()) { }
 
-Parser& Parser::getInstance(CommandFactory& factory) {
-    if (!instance) {
-        instance = new Parser(factory);
-    }
-    return *instance;
-}
-
-Parser::Parser(CommandFactory& factory) : factory(factory) { }
-
-void Parser::parser(std::string& command) {
-    command_name.clear(); 
-    options_map.clear();
+std::shared_ptr<ICommand> Parser::parse(std::string& command) {
+    command_struct.command_name.clear();
+    command_struct.options_map.clear();
     token_vec.clear();
 
-    std::string input;
-    std::istringstream stream(command);
-    while (stream >> input) {
-        Token token;
-        token = tokenizer.tokenizer(input, token);
-        token_vec.push_back(token);
-    }
-    
+    Tokenizer tokenizer;
+    token_vec = tokenizer.tokenizer(command);
     Token end_token;
     end_token.set_END();
     token_vec.push_back(end_token);
-
     //print_vec();
-    if (!syntax.analyzer(token_vec)) {
-        return; 
+
+    if (!syntax->analyzer(token_vec, command_struct)) {
+        std::cerr << "Syntax analysis failed.\n";
+        return nullptr;
     }
-    
-    auto token_it = token_vec.begin();
-    
-    try {
-        while (token_it != token_vec.end() && token_it->type != Token::TokenType::END) {
-            switch (token_it->type) {
-                case Token::TokenType::WORD: {
-                    command_name += std::get<std::string>(token_it->data); 
-                    ++token_it;
-                    break;
-                }
-                case Token::TokenType::SHAPE_OPTION: {
-                    command_name += std::get<std::string>(token_it->data); 
-                    ++token_it;
-                    break;
-                }
-                case Token::TokenType::OPTION: {
-                    std::string option = std::get<std::string>(token_it->data);
-                    ++token_it;
 
-                    std::vector<std::variant<int, double, std::string>> values;
-                    while (token_it != token_vec.end() && token_it->type == Token::TokenType::VALUE) {  // to do : for string values
-                        values.push_back(token_it->data);
-                        ++token_it;
-                    }
-
-                    options_map[option] = values;
-                    break; 
-                }
-                case Token::TokenType::END:
-                    break;
-                default:
-                    //++token_it; 
-                    break;
-            }
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "error: " << e.what() << std::endl;
-    } catch (...) {
-        std::cerr << "unknown error\n";
+    if (!semantic->analyze(command_struct)) {
+        std::cerr << "Semantic analysis failed.\n";
+        return nullptr;
     }
-    
-    if (!semantic.analyze(command_name, options_map)) {
-        std::cout << "semantic failed\n";
-        return;
-    } 
 
-    //print();
-    CommandFactory::get_instance().set_data(command_name, options_map);
-    //std::shared_ptr<Command> cmd = factory.create_command(); // this will go to cli_controller 
+    factory.set_data(command_struct.command_name, command_struct.options_map);
+    return factory.create_command(); 
 }
 
 void Parser::print() {
-    std::cout << "printing options:\n";
-    for (const auto& pair : options_map) { 
-        std::cout << pair.first << ": ";
+    std::cout << "Parsed Command:" << std::endl;
+    std::cout << "Command Name: " << command_struct.command_name << std::endl;
+
+
+    std::cout << "Options:" << std::endl;
+    for (const auto& pair : command_struct.options_map) {
+        std::cout << "  " << pair.first << ": ";
         for (const auto& value : pair.second) {
             std::visit([](const auto& val) { std::cout << val << " "; }, value);
         }
-        std::cout << std::endl; 
+        std::cout << std::endl;
     }
-    std::cout << "command name: " << command_name << std::endl;
 }
 
-
-void Parser::print_vec(){
-    for(const auto it : token_vec){
+void Parser::print_vec() {
+    for (const auto& it : token_vec) {
         switch (it.type) {
         case Token::TokenType::OPTION:
-            std::cout<<"option\n";
-            break;
-        case Token::TokenType::SHAPE_OPTION:
-            std::cout<<"shape option\n";
+            std::cout << "option\n";
             break;
         case Token::TokenType::WORD:
-            std::cout<<"word\n";
+            std::cout << "word\n";
             break;
         case Token::TokenType::END:
-            std::cout<<"end\n";
+            std::cout << "end\n";
             break;
         case Token::TokenType::VALUE:
-        std::cout<<"value\n";
+            std::cout << "value\n";
+            break;
+        case Token::TokenType::SHAPE_OPTION:
+            std::cout << "shape option";
+            break;
+        case Token::TokenType::COLOR_OPTION:
+            std::cout << "color option";
             break;
         default:
             break;

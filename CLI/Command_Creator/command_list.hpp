@@ -9,9 +9,21 @@
 
 #include "command_factory.hpp"
 #include "../Parser/tokenizer.hpp"
-#include "include_document.hpp"
+#include "../../Document/document.hpp"
+#include "../../Commands/addItemCommand.hpp"
+#include "../../Commands/removeItemCommand.hpp"
+#include "../../Commands/addSlideCommand.hpp"
+#include "../../Commands/removeSlideCommand.hpp"
+#include "../../Commands/editItemCommand.hpp"
+#include "../../Commands/helpCommand.hpp"
+#include "../../Commands/drawSlideCommand.hpp"
+#include "../../Commands/undoCommand.hpp"
+#include "../../Commands/redoCommand.hpp"
+#include "../../Commands/printSlideCommand.hpp"
+#include "../../Commands/saveSlideCommand.hpp"
+#include "../../Commands/loadSlideCommand.hpp"
 
-struct Optionlist{
+struct Optionlist {
     std::unordered_map<std::string, std::pair<std::vector<Token::DataType>, int>> expected_options;
 };
 
@@ -19,105 +31,93 @@ struct CommandList {
     std::unordered_map<std::string, Optionlist> get_commands() {
         std::unordered_map<std::string, Optionlist> commands;
 
-        commands["addshape-rectangle"] = {
+        commands["addItem"] = {
             {
-                {"-size", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-color", {{Token::DataType::STRING}, 1}},
-                {"-slideindex", {{Token::DataType::INT}, 1}}
+                {"-slideID", {{Token::DataType::INT}, 1}}, 
+                {"-type", {{Token::DataType::STRING}, 1}},
+                {"-pos", {{Token::DataType::DOUBLE, Token::DataType::DOUBLE}, 2}},  
+                {"-size", {{Token::DataType::DOUBLE, Token::DataType::DOUBLE}, 2}}, 
+                {"-color", {{Token::DataType::STRING}, 1}} 
             }
         };
-        CommandFactory::get_instance().add_command<AddShapeRectangle>("addshape-rectangle");
+        CommandFactory::get_instance().add_command<AddItemCommand>("addItem");
 
-        commands["addshape-circle"] = {
+        
+        commands["removeItem"] = {
             {
-                {"-size", {{Token::DataType::INT}, 1}},
-                {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-color", {{Token::DataType::STRING}, 1}},
-                {"-slideindex", {{Token::DataType::INT}, 1}}
+                {"-slideID", {{Token::DataType::INT}, 1}},
+                {"-id", {{Token::DataType::INT}, 1}}     
             }
         };
-        CommandFactory::get_instance().add_command<AddShapeCircle>("addshape-circle");
+        CommandFactory::get_instance().add_command<RemoveItemCommand>("removeItem");
 
-        commands["addshape-square"] = {
+        
+        commands["editItem"] = {
             {
-                {"-size", {{Token::DataType::INT}, 1}},
-                {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-color", {{Token::DataType::STRING}, 1}},
-                {"-slideindex", {{Token::DataType::INT}, 1}}
+                {"-slideID", {{Token::DataType::INT}, 1}},
+                {"-id", {{Token::DataType::INT}, 1}},     
+                {"-pos", {{Token::DataType::DOUBLE, Token::DataType::DOUBLE}, 2}},  
+                {"-size", {{Token::DataType::DOUBLE, Token::DataType::DOUBLE}, 2}}, 
+                {"-color", {{Token::DataType::STRING}, 1}} 
             }
         };
-        CommandFactory::get_instance().add_command<AddShapeSquare>("addshape-square");
+        CommandFactory::get_instance().add_command<EditItemCommand>("editItem");
 
+        
+        commands["addSlide"] = {};
+        CommandFactory::get_instance().add_command<AddSlideCommand>("addSlide");
 
-        commands["add-text"] = {
+        
+        commands["removeSlide"] = {
             {
-                {"-text", {{Token::DataType::STRING}, 1}},
-                {"-size", {{Token::DataType::INT}, 1}},
-                {"-pos", {{Token::DataType::INT, Token::DataType::INT}, 2}},
-                {"-slideindex", {{Token::DataType::INT}, 1}}
+                {"-id", {{Token::DataType::INT}, 1}}
             }
         };
-        CommandFactory::get_instance().add_command<AddText>("add-text");
+        CommandFactory::get_instance().add_command<RemoveSlideCommand>("removeSlide");
 
-        commands["addslide"] = {
+
+        commands["drawSlide"] = {
             {
-                {"-index", {{Token::DataType::INT}, 1}},
-                {"-color", {{Token::DataType::STRING}, 1}}
+                {"-id", {{Token::DataType::INT}, 1}} 
             }
         };
-        CommandFactory::get_instance().add_command<AddSlide>("addslide");
+        CommandFactory::get_instance().add_command<DrawSlideCommand>("drawSlide");
 
-        commands["editslide"] = {
+        commands["printSlide"] = {
             {
-                {"-index", {{Token::DataType::INT}, 1}},
-                {"-color", {{Token::DataType::STRING}, 1}}
+                {"-id", {{Token::DataType::INT}, 1}} 
             }
         };
-        CommandFactory::get_instance().add_command<EditSlide>("editslide");
+        CommandFactory::get_instance().add_command<PrintSlideCommand>("printSlide");
 
-        commands["removeshape"] = {
+        
+        commands["help"] = {};
+        CommandFactory::get_instance().add_command<HelpCommand>("help");
+
+        commands["undo"] = {};
+        CommandFactory::get_instance().add_command<UndoCommand>("undo");
+
+        commands["redo"] = {};
+        CommandFactory::get_instance().add_command<RedoCommand>("redo");
+
+
+        commands["saveSlide"] = {
             {
-                {"-index", {{Token::DataType::INT}, 1}}
+                {"-id", {{Token::DataType::INT}, 1}} 
             }
         };
-        CommandFactory::get_instance().add_command<RemoveShape>("removeshape");
+        CommandFactory::get_instance().add_command<SaveSlideCommand>("saveSlide");
 
-        commands["removeslide"] = {
-            {
-                {"-index", {{Token::DataType::INT}, 1}}
-            }
-        };
-        CommandFactory::get_instance().add_command<RemoveSlide>("removeslide");
 
-        commands["play"] = {
-            {}
-        };
-        CommandFactory::get_instance().add_command<Play>("play");
+        commands["loadSlide"] = {};
+        CommandFactory::get_instance().add_command<LoadSlideCommand>("loadSlide");
 
-        commands["stop"] = {
-            {}
-        };
-        CommandFactory::get_instance().add_command<Stop>("stop");
-
-        commands["help"] = {
-            {}
-        };
-        CommandFactory::get_instance().add_command<Help>("help");
-
-        commands["showslide"] = {
-            {
-                {"-index", {{Token::DataType::INT}, 1}}
-            }
-        };
-        CommandFactory::get_instance().add_command<ShowSlide>("showslide");
-    
         return commands;
     }
 
-    std::unordered_set<std::string> get_valid_colors(){
-        std::unordered_set<std::string> valid_colors = {"red", "blue", "green", "yellow", "black", "white", "orange", "purple", "pink"};
+    std::unordered_set<std::string> get_valid_colors() {
+        std::unordered_set<std::string> valid_colors = {"red", "blue", "green", "yellow", "black", "white"};
+        //std::cout << "Initialized valid colors" << std::endl;
         return valid_colors;
     }
-
 };

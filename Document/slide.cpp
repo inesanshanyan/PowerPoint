@@ -1,40 +1,72 @@
 #include "slide.hpp"
+#include "./Items/item.hpp"
 
-Slide::Slide(int i, const std::string& c) :  color(c) { }
+#include <unordered_map>
+#include <memory>
+#include <iostream>
 
-void Slide::set_color(const std::string& c) {
-    color = c;
+int Slide::nextItemId = 1;
+
+void Slide::addItem(Shape shape, const Geometry& geometry, const Attribute& attribute) {
+    auto item = createItem(shape, geometry, attribute);
+    int itemId = ++nextItemId;
+    item->setID(itemId);
+    itemCollection[item->getID()] = item;
+    std::cout << "Item added with id: " << itemId << "\n";
 }
 
-std::string Slide::get_color() const {
-    return color;
-}
-
-void Slide::set_index(const int& i) {
-    index = i;
-}
-
-int Slide::get_index() const {
-    return index;
+void Slide::removeItem(int itemId) {
+    auto it = itemCollection.find(itemId);
+    if (it != itemCollection.end()) {
+        itemCollection.erase(it);
+        std::cout << "Item with ID " << itemId << " removed.\n";
+    } else {
+        std::cout << "Item with ID " << itemId << " not found.\n";
+    }
 }
 
 
-void Slide::add_item(std::shared_ptr<Item> item) {
-    items.add_item(item);
+std::shared_ptr<Item> Slide::getItem(int itemId) {
+    auto it = itemCollection.find(itemId);
+    if (it != itemCollection.end()) {
+        return it->second;
+    }
+    return nullptr;
 }
 
-void Slide::remove_item(std::size_t index) {
-    items.remove_item(index);
+void Slide::editItem(int itemId, std::shared_ptr<Item> updatedItem) {
+    itemCollection[itemId] = updatedItem;
 }
 
-void Slide::show_items(){
-    items.show();
+std::vector<RenderInfo> Slide::getRenderInfos() const {
+    std::vector<RenderInfo> renderInfos;
+    for (const auto& pair : itemCollection) {
+        renderInfos.push_back(pair.second->getRenderInfo());
+    }
+    return renderInfos;
 }
 
-std::shared_ptr<Item> Slide::get_item(std::size_t index) const {
-    return items.get_item(index);
+
+std::shared_ptr<Item> Slide::createItem(Shape shape, const Geometry& geometry, const Attribute& attribute) {
+    return std::make_shared<Item>(nextItemId++, shape, geometry, attribute);
 }
 
-std::size_t Slide::item_count() const {
-    return items.size();
+
+std::string Slide::shapeToString(Shape shape) const {
+    switch (shape) {
+        case Shape::RECTANGLE: return "Rectangle";
+        case Shape::TRIANGLE: return "Triangle";
+        case Shape::ELLIPSE: return "Ellipse";
+        default: return "Unknown";
+    }
 }
+
+void Slide::setRenderInfos(const std::vector<RenderInfo>& renderInfos) {
+        int index = 0;
+        for (auto& itemPair : itemCollection) {
+            if (index < renderInfos.size()) {
+                itemPair.second->setRenderInfo(renderInfos[index]);
+                index++;
+            }
+        }
+    }

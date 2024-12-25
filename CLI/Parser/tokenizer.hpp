@@ -4,56 +4,47 @@
 #include <vector>
 #include <regex>
 #include <variant>
+#include <sstream>
+#include <exception>
 
-struct Token{
+struct Token {
 public:
-    enum class TokenType{
-        WORD, OPTION, SHAPE_OPTION, VALUE, END
+    enum class TokenType {
+        WORD, OPTION, SHAPE_OPTION, VALUE, COLOR_OPTION, END
     } type;
-    enum class DataType{
+
+    enum class DataType {
         INT, DOUBLE, STRING
     } data_type;
-    std::variant<int, double, std::string> data;
-    DataType detect_data_type(const std::string& input) {
-        if (input.find('.') != std::string::npos) {
-            try {
-                data = std::stod(input);
-                return DataType::DOUBLE;
-            }
-            catch (std::invalid_argument&) {
-                data = input;
-                return DataType::STRING;
-            }
-        }
-        try {
-            data = std::stoi(input);
-            return DataType::INT;
-        }
-        catch (std::invalid_argument&) {
-            data = input;
-            return DataType::STRING;
-        }
-    }
-    void set_END() {
-        this->type = Token::TokenType::END;
-        this->data_type = Token::DataType::STRING;
-    }
 
+    std::variant<int, double, std::string> data;
+
+    DataType detect_data_type(const std::string& input);
+    void set_END();
+    void print() const;
 };
 
-class Tokenizer{
+class Tokenizer {
 public:
-    Tokenizer() = default;
-    Token tokenizer(std::string command_stream, Token& token);
+    Tokenizer();
+    std::vector<Token> tokenizer(const std::string& stream);
     std::vector<Token> get_tokens() const;
-    //void set_END(Token&) const;
+    void print_tokens() const;
 
-    void print(const Token& token);
 private:
-    std::regex word_regex{"[a-zA-Z]+"};
-    std::regex shape_option_regex{"-rectangle|-sqaure|-circle"};
-    std::regex option_regex{"-[a-zA-Z]+"};
-    std::regex value_regex{"^-?\\d+(\\.\\d+)?$|^\"[a-zA-Z]+\"$"};
-    //std::regex end_regex{"\\n"};
+    std::regex word_regex;
+    std::regex option_regex;
+    std::regex shape_regex;
+    std::regex color_regex;
+    std::regex value_regex;
+    std::vector<Token> tokens;
+};
 
+class TokenizerErrorException : public std::exception {
+public:
+    explicit TokenizerErrorException(const std::string& message);
+    virtual const char* what() const noexcept override;
+
+private:
+    std::string error;
 };

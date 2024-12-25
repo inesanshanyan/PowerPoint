@@ -1,35 +1,33 @@
 #pragma once
 
-#include <string>
-#include <variant>
-
-struct Position {
-    int x = 0;
-    int y = 0;
-};
-
-using Size = std::variant<int, std::pair<int, int>>;
+#include "geometry.hpp"
+#include "attribute.hpp"
+#include "render_info.hpp"
+#include <iostream>
+#include <memory>
 
 class Item {
 public:
-    virtual ~Item() = default;
+    Item(int id, Shape shape, const Geometry& geometry, const Attribute& attribute);
 
-    virtual void set_pos(const Position&) = 0;
-    virtual void set_color(const std::string&) = 0;
-    virtual void set_index(std::size_t) = 0;
-    virtual void set_size(const Size&) = 0;
-    virtual void set_name(const std::string&) = 0;
+    RenderInfo getRenderInfo() const;
+    void setRenderInfo(const RenderInfo& renderInfo);
 
-    virtual Position get_pos() const = 0;
-    virtual std::string get_color() const = 0;
-    virtual std::size_t get_index() const = 0;
-    virtual Size get_size() const = 0;
-    virtual std::string get_name() const = 0;
+    int getID() const;
+    void setID(const int& id);
 
-protected:
-    Position position;
-    std::string color;
-    std::size_t index = 0;
-    Size size; 
-    std::string name; 
+    Shape getShape() const;
+    void setShape(Shape new_shape);
+
+    const Geometry& getGeometry() const;
+    void setGeometry(const Geometry& new_geometry);
+
+    const Attribute& getAttribute() const;
+    void setAttribute(const Attribute& new_attribute);
+
+private:
+    int id;
+    Shape shape; 
+    Geometry geometry;
+    Attribute attribute;
 };
